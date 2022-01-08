@@ -14,18 +14,22 @@ function StepThree() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if(answer.trim()){
-      axios.post("/api/submit-answer",{
-        token: userToken, answer, step: '3'
-      }).then((response) => {
-        console.log(response)
-        if(response['status'] === 200){
-          setUserAnswers({...userAnswers ,step_three_answer: answer})
-          navigate('/')
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      if(answer.trim() !== userAnswers?.step_three_answer){
+        axios.post("/api/submit-answer",{
+          token: userToken, answer, step: '3'
+        }).then((response) => {
+          console.log(response)
+          if(response['status'] === 200){
+            setUserAnswers({...userAnswers ,step_three_answer: answer})
+            navigate('/')
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }else{
+        navigate('/')
+      }
     }
     setAnswer('');
   }

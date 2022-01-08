@@ -14,17 +14,21 @@ function StepTwo() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if(answer.trim()){
-      axios.post("/api/submit-answer",{
-        token: userToken, answer, step: '2'
-      }).then((response) => {
-        if(response['status'] === 200){
-          setUserAnswers({...userAnswers ,step_two_answer: answer})
-          navigate('/forms/step-3')
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      if(answer.trim() !== userAnswers?.step_two_answer){
+        axios.post("/api/submit-answer",{
+          token: userToken, answer, step: '2'
+        }).then((response) => {
+          if(response['status'] === 200){
+            setUserAnswers({...userAnswers ,step_two_answer: answer})
+            navigate('/forms/step-3')
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }else{
+        navigate('/forms/step-3')
+      }
     }
     setAnswer('');
   }
